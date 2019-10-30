@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Proyecto</string>
+    <string name="tittle">2dam 2curious</string>
+    <string name="user">User</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="sigUp">Not registered yet? Sign up</string>
+    <string name="fullname">Fullname</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="password2">Password</string>
+    <string name="confirmPassword">Comfirm password</string>
+    <string name="create">Create user</string>
+    <string name="undo">Undo</string>
+    <string name="redo">Redo</string>
+    <string name="logOut">Log Out</string>
+    <string name="welcome">Welcome</string>
+    <string name="userWelcome">User</string>
+</resources>
