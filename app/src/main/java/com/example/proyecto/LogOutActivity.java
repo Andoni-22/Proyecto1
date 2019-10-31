@@ -9,16 +9,20 @@ import android.widget.Button;
 
 public class LogOutActivity extends AppCompatActivity {
 
+    private Button btnLogOut;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_out);
+
+        btnLogOut = (Button)findViewById(R.id.btnLogOut);
+
         LogOut();
 
     }
 
     private void LogOut() {
-        Button btnLogOut = (Button)findViewById(R.id.btnLogOut);
+
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

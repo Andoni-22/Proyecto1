@@ -13,84 +13,123 @@ import java.util.regex.Pattern;
 import Interfaces.Signable;
 import Logic.Client;
 import Logic.ClientFactory;
+
+import Models.Enum.TypeMessage;
+import Models.Message;
 import Models.User;
+
+import validators.Validators;
 
 /**
  * @author Andoni Fiat
  */
 public class SignupActivity extends AppCompatActivity{
+    private Button btnCreateUser;
+    private EditText editTextUsername;
+    private EditText editTextEmail;
+    private EditText editTextFullname;
+    private EditText editTextPWD;
+    private EditText editTextComfirmPWD;
+
    Signable client = ClientFactory.getClient();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        editTextUsername = (EditText) findViewById(R.id.editTextUsername);
+        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
+        editTextFullname = (EditText) findViewById(R.id.editTextFullname);
+        editTextPWD = (EditText) findViewById(R.id.editTextPWD);
+        editTextComfirmPWD = (EditText) findViewById(R.id.editTextComfirmPWD);
 
         createUser();
     }
 
     private void createUser() {
 
-        Button btnCreateUser = (Button) findViewById(R.id.btnCreateUser);
-
+        btnCreateUser = (Button) findViewById(R.id.btnCreateUser);
         btnCreateUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                boolean correct;
 
-                comprobarDatos();
+                correct = comprobarDatos();
+
+                if(correct = true){
+                    User user = new User();
+                    Message msg = new Message();
+                    MyThread thread = new MyThread();
+                    int opc = 0;
+
+                    user.setFullname(editTextFullname.getText().toString());
+                    user.setEmail(editTextEmail.getText().toString());
+                    user.setLogin(editTextUsername.getText().toString());
+                    user.setPassword(editTextPWD.getText().toString());
+
+                    thread.androidThread(opc = 2, user);
+
+                    try {
+                        thread.start();
+                        thread.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
             }
+            /**
+             * In this method we chechk that the signup data have a correct format
+             */
+            private boolean comprobarDatos() {
 
-            private void comprobarDatos() {
 
                 String email,password,comfirmPwd;
-                boolean correct = false;
-                Client cli = new Client();
+                boolean correct = false, functional = true;
+                Validators vali = new Validators();
 
-
-                EditText editTextUsername = (EditText) findViewById(R.id.editTextUsername);
-                EditText editTextEmail = (EditText) findViewById(R.id.editTextEmail);
                 email = editTextEmail.getText().toString();
+                password = editTextPWD.getText().toString();
+                comfirmPwd = editTextComfirmPWD.getText().toString();
 
-
-                correct=cli.emailChecker(email);
+                correct=vali.emailChecker(email);
                 if(correct!=true){
                     editTextEmail.setError("Invalid email format");
+                    functional = false;
                 }
-
-                EditText editTextFullname = (EditText) findViewById(R.id.editTextFullname);
-
-                EditText editTextPWD = (EditText) findViewById(R.id.editTextPWD);
-                password = editTextPWD.getText().toString();
-
-                EditText editTextComfirmPWD = (EditText) findViewById(R.id.editTextComfirmPWD);
-                comfirmPwd = editTextComfirmPWD.getText().toString();
+                correct = vali.passwordChecker(password);
+                if(correct!=true){
+                    editTextPWD.setError("Min 8 characters, 1 Upper, 1 lower and 1 number");
+                    functional = false;
+                }
                 if(!password.equalsIgnoreCase(comfirmPwd)){
                     editTextComfirmPWD.setError("Password does not match");
+                    functional = false;
                 }
-
-
                 if(editTextUsername.getText().toString().isEmpty()){
-                    editTextUsername.setError("Datos incorrectos");
+                    editTextUsername.setError("Not data found");
+                    functional = false;
                 }
                 if(editTextEmail.getText().toString().isEmpty()){
-                    editTextEmail.setError("Datos incorrectos");
+                    editTextEmail.setError("Not data found");
+                    functional = false;
                 }
                 if(editTextFullname.getText().toString().isEmpty()){
-                    editTextFullname.setError("Datos incorrectos");
+                    editTextFullname.setError("Not data found");
+                    functional = false;
                 }
                 if(editTextPWD.getText().toString().isEmpty()){
-                    editTextPWD.setError("Datos incorrectos");
+                    editTextPWD.setError("Not data found");
+                    functional = false;
                 }
                 if(editTextComfirmPWD.getText().toString().isEmpty()){
-                    editTextComfirmPWD.setError("Datos incorrectos");
+                    editTextComfirmPWD.setError("Not data found");
+                    functional = false;
                 }
+                return functional;
             }
-
         });
-
-
         }
-
-
 }
 

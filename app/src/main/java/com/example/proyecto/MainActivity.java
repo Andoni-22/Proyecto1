@@ -10,18 +10,29 @@ import android.widget.EditText;
 
 import Interfaces.Signable;
 import Logic.ClientFactory;
+import Models.Enum.TypeMessage;
+import Models.Message;
+import Models.User;
 
 /**
  * @autor Andoni Fiat
  */
 public class MainActivity extends AppCompatActivity {
-    //Signable sign = new ClientFactory().getClient();
+    private Button btnLogin;
+    private Button btnSignUp;
+    private EditText editTextPassword;
+    private EditText editTextUser;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        editTextUser = (EditText) findViewById(R.id.editTextUser);
+        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnSignUp = (Button) findViewById(R.id.btnSignUp);
 
         logInLauncher();
         signUpLauncher();
@@ -32,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private void logInLauncher() {
 
-        Button btnLogin = (Button) findViewById(R.id.btnLogin);
-        final EditText editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,26 +53,42 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), LogOutActivity.class);
                     startActivity(intent);
                 }else{
-                    editTextPassword.setError("Datos incorrectos");
+                    editTextPassword.setError("Incorrect login");
                 }
             }
-
             /**
              * method that comfirm the login
              * @return true if the user and password are correct
              */
             private boolean comprobarLogin() {
-                return true;
+                boolean correct = false;
+                int opc = 0;
+                User user = new User();
+                MyThread thread = new MyThread();
+                Message msg = new Message();
+                user.setLogin(editTextUser.getText().toString());
+                user.setPassword(editTextPassword.getText().toString());
+
+                msg.setData(user);
+                msg.setType(TypeMessage.LOGIN);
+
+                thread.androidThread(opc = 1, user);
+
+                try {
+                    thread.start();
+                    thread.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return correct;
             }
 
         });
     }
-
     /**
      * Method that launch activity_signup layout
      */
     private void signUpLauncher() {
-        Button btnSignUp = (Button) findViewById(R.id.btnSignUp);
 
         btnSignUp.setOnClickListener(new View.OnClickListener(){
 
