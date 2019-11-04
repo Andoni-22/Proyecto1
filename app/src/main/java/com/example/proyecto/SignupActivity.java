@@ -90,7 +90,7 @@ public class SignupActivity extends AppCompatActivity{
                 }else if(!editTextEmail.getText().toString().isEmpty()){
                     correct=vali.emailChecker(email);
                     if(correct!=true){
-                        editTextEmail.setText("");
+
                         editTextEmail.setError("Invalid email format");
                         functional = false;
                     }
@@ -102,24 +102,25 @@ public class SignupActivity extends AppCompatActivity{
                 if(editTextPWD.getText().toString().isEmpty()){
                     editTextPWD.setError("Not data found");
                     functional = false;
-                }else if(!editTextPWD.getText().toString().isEmpty()){
-                    correct = vali.passwordChecker(password);
-                    if(correct!=true){
-                        editTextPWD.setError("Min 8 characters, 1 Upper, 1 lower and 1 number");
-                        editTextPWD.setText("");
-                        editTextComfirmPWD.setText("");
-                        functional = false;
-                    }if(!password.equalsIgnoreCase(comfirmPwd)){
-                        editTextComfirmPWD.setError("Password does not match");
-                        editTextComfirmPWD.setText("");
-                        editTextPWD.setText("");
-                        functional = false;
-                    }
                 }
                 if(editTextComfirmPWD.getText().toString().isEmpty()){
                     editTextComfirmPWD.setError("Not data found");
                     functional = false;
                 }
+                correct = vali.passwordChecker(password);
+                if(correct==false){
+                    editTextPWD.setError("Min 8 characters, 1 Upper, 1 lower and 1 number");
+
+
+                    functional = false;
+                }if(!password.equalsIgnoreCase(comfirmPwd)){
+                    editTextComfirmPWD.setError("Password does not match");
+
+                    editTextPWD.setText("");
+                    functional = false;
+                }
+
+
                 return functional;
             }
         });
@@ -136,10 +137,10 @@ public class SignupActivity extends AppCompatActivity{
         int opc = 0;
         boolean correct = false;
 
-        user.setFullname(editTextFullname.getText().toString());
-        user.setEmail(editTextEmail.getText().toString());
-        user.setLogin(editTextUsername.getText().toString());
-        user.setPassword(editTextPWD.getText().toString());
+        user.setFullname(String.valueOf(editTextFullname.getText()));
+        user.setEmail(String.valueOf(editTextEmail.getText()));
+        user.setLogin(String.valueOf(editTextUsername.getText()));
+        user.setPassword(String.valueOf(editTextPWD.getText()));
 
         thread.androidThread(opc = 2, user);
 

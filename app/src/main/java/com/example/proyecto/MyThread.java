@@ -14,12 +14,11 @@ import exceptions.SupLogErrorException;
  * @author Andoni Fiat
  */
 public class MyThread extends Thread {
+    private int opc = 0;
+    private User user = new User();
+    private User rest = new User();
     Signable sign = ClientFactory.getClient();
     Message message = new Message();
-
-    int opc = 0;
-    User user = new User();
-    User rest = new User();
 
     /**
      * method that we use to get the data on the trhead
@@ -35,14 +34,12 @@ public class MyThread extends Thread {
      * method that we use to conect whith the server
      */
     public void run(){
-        //TODO try-multiCatch para controlar excepciones
+
         try {
             switch (opc){
                 //LOGIN
                 case 1:
-
-                        rest = sign.login(user);
-
+                    rest = sign.login(user);
                     break;
                 //Sign up
                 case 2:
@@ -65,6 +62,6 @@ public class MyThread extends Thread {
      * @return user, if user is null is because something go wrong
      */
     public User getResult(){
-        return user;
+        return rest;
     }
 }

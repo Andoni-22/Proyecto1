@@ -62,29 +62,30 @@ public class MainActivity extends AppCompatActivity {
              */
             private boolean comprobarLogin() {
                 boolean correct = false;
-                int opc = 0;
+                int opc;
                 User user = new User();
                 MyThread thread = new MyThread();
                 Message msg = new Message();
-                user.setLogin(editTextUser.getText().toString());
-                user.setPassword(editTextPassword.getText().toString());
+                user.setLogin(String.valueOf(editTextUser.getText()));
+                user.setPassword(String.valueOf(editTextPassword.getText()));
 
                 msg.setData(user);
                 msg.setType(TypeMessage.LOGIN);
 
-                thread.androidThread(opc = 1, user);
+                thread.androidThread(1,user);
 
                 try {
                     thread.start();
                     thread.join();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                }finally {
+                    user = thread.getResult();
+                    if (user != null) {
+                        correct = true;
+                    }
+                    return correct;
                 }
-                user = thread.getResult();
-                if(user != null){
-                    correct = true;
-                }
-                return correct;
             }
 
         });
