@@ -5,6 +5,10 @@ import Logic.ClientFactory;
 import Models.Enum.TypeMessage;
 import Models.Message;
 import Models.User;
+import exceptions.LoginErrorException;
+import exceptions.PasswErrorException;
+import exceptions.SupEmailErrorException;
+import exceptions.SupLogErrorException;
 
 /**
  * @author Andoni Fiat
@@ -32,15 +36,27 @@ public class MyThread extends Thread {
      */
     public void run(){
         //TODO try-multiCatch para controlar excepciones
-        switch (opc){
-            //LOGIN
-            case 1:
-                rest = sign.login(user);
-                break;
-            //Sign up
-            case 2:
-                rest = sign.signUp(user);
-                break;
+        try {
+            switch (opc){
+                //LOGIN
+                case 1:
+
+                        rest = sign.login(user);
+
+                    break;
+                //Sign up
+                case 2:
+                    rest = sign.signUp(user);
+                    break;
+            }
+        } catch (LoginErrorException e) {
+            e.printStackTrace();
+        } catch (PasswErrorException e) {
+            e.printStackTrace();
+        } catch (SupEmailErrorException e) {
+            e.printStackTrace();
+        } catch (SupLogErrorException e) {
+            e.printStackTrace();
         }
     }
 
