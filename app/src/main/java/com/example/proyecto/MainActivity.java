@@ -80,6 +80,10 @@ public class MainActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                user = thread.getResult();
+                if(user != null){
+                    correct = true;
+                }
                 return correct;
             }
 
