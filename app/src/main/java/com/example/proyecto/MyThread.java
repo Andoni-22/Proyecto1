@@ -7,6 +7,7 @@ import Models.Message;
 import Models.User;
 import exceptions.LoginErrorException;
 import exceptions.PasswErrorException;
+import exceptions.ServerErrorException;
 import exceptions.SupEmailErrorException;
 import exceptions.SupLogErrorException;
 
@@ -53,6 +54,8 @@ public class MyThread extends Thread {
         } catch (SupEmailErrorException e) {
             e.printStackTrace();
         } catch (SupLogErrorException e) {
+            e.printStackTrace();
+        } catch (ServerErrorException e) {
             e.printStackTrace();
         }
     }

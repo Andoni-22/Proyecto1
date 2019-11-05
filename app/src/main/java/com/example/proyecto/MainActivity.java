@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
                 User user = new User();
                 MyThread thread = new MyThread();
                 Message msg = new Message();
-                user.setLogin(String.valueOf(editTextUser.getText()));
-                user.setPassword(String.valueOf(editTextPassword.getText()));
+                user.setLogin(editTextUser.getText().toString());
+                user.setPassword(editTextPassword.getText().toString());
 
                 msg.setData(user);
                 msg.setType(TypeMessage.LOGIN);
