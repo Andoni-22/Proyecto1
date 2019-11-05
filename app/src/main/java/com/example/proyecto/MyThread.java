@@ -7,6 +7,7 @@ import Models.Message;
 import Models.User;
 import exceptions.LoginErrorException;
 import exceptions.PasswErrorException;
+import exceptions.ServerErrorException;
 import exceptions.SupEmailErrorException;
 import exceptions.SupLogErrorException;
 
@@ -35,14 +36,12 @@ public class MyThread extends Thread {
      * method that we use to conect whith the server
      */
     public void run(){
-        //TODO try-multiCatch para controlar excepciones
+
         try {
             switch (opc){
                 //LOGIN
                 case 1:
-
-                        rest = sign.login(user);
-
+                    rest = sign.login(user);
                     break;
                 //Sign up
                 case 2:
@@ -56,6 +55,8 @@ public class MyThread extends Thread {
         } catch (SupEmailErrorException e) {
             e.printStackTrace();
         } catch (SupLogErrorException e) {
+            e.printStackTrace();
+        } catch (ServerErrorException e) {
             e.printStackTrace();
         }
     }
