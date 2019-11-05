@@ -2,11 +2,15 @@ package com.example.proyecto;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import Interfaces.Signable;
 import Logic.ClientFactory;
@@ -46,7 +50,9 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean esta;
+                boolean esta, network;
+
+                network = isInternet();
                 esta = comprobarLogin();
 
                 if(esta==true){
@@ -56,6 +62,22 @@ public class MainActivity extends AppCompatActivity {
                     editTextPassword.setError("Incorrect login");
                 }
             }
+
+            private boolean isInternet() {
+                boolean ret = false;
+                try{
+                    connectivityManager = (ConnectivityManager) getApplicationContext()
+                            .getSystemService(Context.CONNECTIVITY_SERVICE);
+                    NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+                    if((networkInfo != null) && (networkInfo.isAvailable()) && networkInfo.isConnected()){
+                        ret = true;
+                    }
+                } catch (Exception e){
+                    Toast.makeText(getApplicationContext(),"Connectivity Exception", Toast.LENGTH_SHORT).show();
+                }
+                return ret;
+            }
+
             /**
              * method that comfirm the login
              * @return true if the user and password are correct
