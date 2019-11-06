@@ -132,9 +132,8 @@ public class SignupActivity extends AppCompatActivity{
      */
     private boolean comprobarSignUp() {
         User user = new User();
-        Message msg = new Message();
-        MyThread thread = new MyThread();
-        int opc = 0;
+        MyThread thread;
+        int opc;
         boolean correct = false;
 
         user.setFullname(String.valueOf(editTextFullname.getText()));
@@ -142,7 +141,7 @@ public class SignupActivity extends AppCompatActivity{
         user.setLogin(String.valueOf(editTextUsername.getText()));
         user.setPassword(String.valueOf(editTextPWD.getText()));
 
-        thread.androidThread(opc = 2, user);
+        thread=new MyThread(opc = 2, user);
 
         try {
             thread.start();

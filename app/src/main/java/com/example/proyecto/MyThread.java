@@ -15,9 +15,9 @@ import exceptions.SupLogErrorException;
  * @author Andoni Fiat
  */
 public class MyThread extends Thread {
-    private int opc = 0;
-    private User user = new User();
-    private User rest = new User();
+    private int opc;
+    private User user;
+    private User rest;
     Signable sign = ClientFactory.getClient();
     Message message = new Message();
 
@@ -26,7 +26,7 @@ public class MyThread extends Thread {
      * @param opc integer that can be "1" or "2"
      * @param user object that have the login or signup data
      */
-    public  void androidThread(int opc, User user){
+    public MyThread(int opc, User user){
         this.opc = opc;
         this.user = user;
     }

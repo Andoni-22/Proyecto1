@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private Button btnSignUp;
     private EditText editTextPassword;
     private EditText editTextUser;
+    private MyThread thread;
+
 
 
     @Override
@@ -37,10 +39,29 @@ public class MainActivity extends AppCompatActivity {
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
+        boolean network;
 
         logInLauncher();
         signUpLauncher();
+        network = isInternet();
     }
+
+    private boolean isInternet() {
+        boolean ret = false;
+        ConnectivityManager connectivityManager=null;
+        try{
+            connectivityManager = (ConnectivityManager) getApplicationContext()
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if((networkInfo != null) && (networkInfo.isAvailable()) && networkInfo.isConnected()){
+                ret = true;
+            }
+        } catch (Exception e){
+            Toast.makeText(getApplicationContext(),"Connectivity Exception", Toast.LENGTH_SHORT).show();
+        }
+        return ret;
+    }
+
 
     /**
      * Method that launch activity_logOut layout
@@ -50,32 +71,16 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean esta, network;
-
-                network = isInternet();
+                boolean esta;
                 esta = comprobarLogin();
 
                 if(esta==true){
                     Intent intent = new Intent(getApplicationContext(), LogOutActivity.class);
+                    intent.putExtra("usuario",thread.getResult());
                     startActivity(intent);
                 }else{
                     editTextPassword.setError("Incorrect login");
                 }
-            }
-
-            private boolean isInternet() {
-                boolean ret = false;
-                try{
-                    connectivityManager = (ConnectivityManager) getApplicationContext()
-                            .getSystemService(Context.CONNECTIVITY_SERVICE);
-                    NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-                    if((networkInfo != null) && (networkInfo.isAvailable()) && networkInfo.isConnected()){
-                        ret = true;
-                    }
-                } catch (Exception e){
-                    Toast.makeText(getApplicationContext(),"Connectivity Exception", Toast.LENGTH_SHORT).show();
-                }
-                return ret;
             }
 
             /**
@@ -86,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
                 boolean correct = false;
                 int opc;
                 User user = new User();
-                MyThread thread = new MyThread();
                 Message msg = new Message();
                 user.setLogin(editTextUser.getText().toString());
                 user.setPassword(editTextPassword.getText().toString());
@@ -94,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 msg.setData(user);
                 msg.setType(TypeMessage.LOGIN);
 
-                thread.androidThread(1,user);
+                thread=new MyThread(1,user);
 
                 try {
                     thread.start();
