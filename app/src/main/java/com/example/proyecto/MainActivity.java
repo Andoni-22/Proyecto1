@@ -26,20 +26,48 @@ public class MainActivity extends AppCompatActivity {
     private Button btnSignUp;
     private EditText editTextPassword;
     private EditText editTextUser;
+    private MyThread thread ;
+    private User user=new User();
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        boolean network = false;
         editTextUser = (EditText) findViewById(R.id.editTextUser);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
 
+        editTextUser.setText("ruben");
+        editTextPassword.setText("Abcd*1234");
+
+         signUpLauncher();
+
+        network = isInternet();
+        if(network == false){
+            Toast.makeText(getApplicationContext(),"NOT INTERNETEN CONECTION",Toast.LENGTH_SHORT).show();
+            btnLogin.setEnabled(false);
+            btnSignUp.setEnabled(false);
+        }
         logInLauncher();
-        signUpLauncher();
+    }
+    private boolean isInternet() {
+        boolean ret = false;
+        ConnectivityManager connectivityManager;
+        try{
+            connectivityManager = (ConnectivityManager) getApplicationContext()
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if((networkInfo != null) && (networkInfo.isAvailable()) && networkInfo.isConnected()){
+                ret = true;
+            }
+        } catch (Exception e){
+            Toast.makeText(getApplicationContext(),"Connectivity Exception", Toast.LENGTH_SHORT).show();
+        }
+        return ret;
     }
 
     /**
@@ -52,49 +80,31 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean esta, network;
 
-                network = isInternet();
+
                 esta = comprobarLogin();
 
                 if(esta==true){
                     Intent intent = new Intent(getApplicationContext(), LogOutActivity.class);
+                    intent.putExtra("usuario", user);
                     startActivity(intent);
                 }else{
                     editTextPassword.setError("Incorrect login");
                 }
             }
-
-            private boolean isInternet() {
-                boolean ret = false;
-                try{
-                    connectivityManager = (ConnectivityManager) getApplicationContext()
-                            .getSystemService(Context.CONNECTIVITY_SERVICE);
-                    NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-                    if((networkInfo != null) && (networkInfo.isAvailable()) && networkInfo.isConnected()){
-                        ret = true;
-                    }
-                } catch (Exception e){
-                    Toast.makeText(getApplicationContext(),"Connectivity Exception", Toast.LENGTH_SHORT).show();
-                }
-                return ret;
-            }
-
             /**
              * method that comfirm the login
              * @return true if the user and password are correct
              */
             private boolean comprobarLogin() {
                 boolean correct = false;
-                int opc = 0;
-                User user = new User();
-                MyThread thread = new MyThread();
-                Message msg = new Message();
+                int opc = 1;
+
                 user.setLogin(editTextUser.getText().toString());
                 user.setPassword(editTextPassword.getText().toString());
 
-                msg.setData(user);
-                msg.setType(TypeMessage.LOGIN);
 
-                thread.androidThread(opc = 1, user);
+
+                thread=new MyThread(opc, user);
 
                 try {
                     thread.start();
