@@ -31,8 +31,9 @@ public class SignupActivity extends AppCompatActivity{
     private EditText editTextFullname;
     private EditText editTextPWD;
     private EditText editTextComfirmPWD;
+    private MyThread thread ;
+    private User user=new User();
 
-   Signable client = ClientFactory.getClient();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +45,12 @@ public class SignupActivity extends AppCompatActivity{
         editTextPWD = (EditText) findViewById(R.id.editTextPWD);
         editTextComfirmPWD = (EditText) findViewById(R.id.editTextComfirmPWD);
         btnCreateUser = (Button) findViewById(R.id.btnCreateUser);
+
+        editTextUsername.setText("yeray");
+        editTextEmail.setText("yeray@gmail.com");
+        editTextFullname.setText("yeray yeray");
+        editTextPWD.setText("Abcd*1234");
+        editTextComfirmPWD.setText("Abcd*1234");
 
         createUser();
     }
@@ -130,9 +137,8 @@ public class SignupActivity extends AppCompatActivity{
      * @return true if everything is okey and the user is able to connect
      */
     private boolean comprobarSignUp() {
-        User user = new User();
-        MyThread thread ;
-        int opc = 0;
+
+        int opc = 2;
         boolean correct = false;
 
         user.setFullname(editTextFullname.getText().toString());
@@ -140,7 +146,7 @@ public class SignupActivity extends AppCompatActivity{
         user.setLogin(editTextUsername.getText().toString());
         user.setPassword(editTextPWD.getText().toString());
 
-        thread=new MyThread(opc = 2, user);
+        thread=new MyThread(opc, user);
 
         try {
             thread.start();

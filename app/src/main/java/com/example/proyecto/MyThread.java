@@ -1,5 +1,7 @@
 package com.example.proyecto;
 
+import android.util.Log;
+
 import Interfaces.Signable;
 import Logic.ClientFactory;
 import Models.Enum.TypeMessage;
@@ -21,6 +23,7 @@ public class MyThread extends Thread {
     private int opc;
     private User user;
     private User rest;
+    private boolean ifError=false;
 
     /**
      * method that we use to get the data on the trhead
@@ -50,15 +53,17 @@ public class MyThread extends Thread {
                     break;
             }
         } catch (LoginErrorException e) {
-            e.printStackTrace();
+            Log.e("Error","Error en el ");
+            ifError=true;
+
         } catch (PasswErrorException e) {
-            e.printStackTrace();
+            Log.e("Error","Error en el ");
         } catch (SupEmailErrorException e) {
-            e.printStackTrace();
+            Log.e("Error","Error en el ");
         } catch (SupLogErrorException e) {
-            e.printStackTrace();
+            Log.e("Error","Error en el login");
         } catch (ServerErrorException e) {
-            e.printStackTrace();
+            Log.e("Error","Error en el ");
         }
     }
 
@@ -70,4 +75,7 @@ public class MyThread extends Thread {
         return rest;
     }
 
+    public boolean ifError(){
+        return ifError;
+    }
 }

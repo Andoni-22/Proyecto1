@@ -41,10 +41,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
 
-        editTextUser.setText("ruben");
-        editTextPassword.setText("Abcd*1234");
-
-         signUpLauncher();
+        signUpLauncher();
 
         network = isInternet();
         if(network == false){
