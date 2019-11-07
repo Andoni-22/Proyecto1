@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editTextPassword;
     private EditText editTextUser;
     private MyThread thread ;
-    private User user=new User();
+    private User user;
 
 
 
