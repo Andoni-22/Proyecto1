@@ -47,6 +47,10 @@ public class MyThread extends Thread {
                     rest = sign.signUp((User)mensaje.getData());
                     break;
             }
+
+            mensaje.setType(TypeMessage.OK);
+            mensaje.setData(rest);
+
         } catch (LoginErrorException e) {
             Log.e("Error","Error en el login");
             mensaje.setType(TypeMessage.LOGINERROR);
@@ -63,8 +67,6 @@ public class MyThread extends Thread {
             Log.e("Error","Error en el servidor");
             mensaje.setType(TypeMessage.LOGINERROR);
         }
-        mensaje.setType(TypeMessage.OK);
-        mensaje.setData(rest);
 
     }
 

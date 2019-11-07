@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -162,6 +163,14 @@ public class SignupActivity extends AppCompatActivity{
         if(thread.getMensaje().getType()==TypeMessage.OK){
             user=(User)thread.getMensaje().getData();
             correct = true;
+        }else if(thread.getMensaje().getType()==TypeMessage.SUPEMAILERROR){
+            Toast.makeText(getApplicationContext(), "EmailError", Toast.LENGTH_LONG).show();
+            editTextEmail.requestFocus();
+            editTextEmail.selectAll();
+        }else if(thread.getMensaje().getType()==TypeMessage.SUPLOGERROR){
+            Toast.makeText(getApplicationContext(), "LOGIN already used", Toast.LENGTH_LONG).show();
+            editTextUsername.requestFocus();
+            editTextUsername.selectAll();
         }
 
 

@@ -12,9 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LogOutActivity"></activity>
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".LogOutActivity" android:noHistory="false"></activity>
+        <activity android:name=".SignupActivity" android:noHistory="false"/>
+        <activity android:name=".MainActivity" android:noHistory="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

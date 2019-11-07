@@ -82,7 +82,9 @@ public class MainActivity extends AppCompatActivity {
                 if(esta==true){
                     Intent intent = new Intent(getApplicationContext(), LogOutActivity.class);
                     intent.putExtra("usuario", user);
+                    Toast.makeText(getApplicationContext(),"LOGIN CORRECTLY",Toast.LENGTH_LONG).show();
                     startActivity(intent);
+                    finish();
                 }else{
                     Toast.makeText(getApplicationContext(), "Incorrect login", Toast.LENGTH_LONG);
 
@@ -95,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
              */
             private boolean comprobarLogin() {
                 boolean correct = false;
+                user=new User();
 
                 user.setLogin(editTextUser.getText().toString());
                 user.setPassword(editTextPassword.getText().toString());
@@ -109,11 +112,19 @@ public class MainActivity extends AppCompatActivity {
                     thread.start();
                     thread.join();
                 } catch (InterruptedException e) {
-                    Toast.makeText(getApplicationContext(), "Conexión interrumpida", Toast.LENGTH_LONG);
+                    Toast.makeText(getApplicationContext(), "Conexión interrumpida", Toast.LENGTH_LONG).show();
                 }
                 if(thread.getMensaje().getType()==TypeMessage.OK){
                     user = (User) thread.getMensaje().getData();
                     correct = true;
+                }else if(thread.getMensaje().getType()==TypeMessage.LOGINERROR){
+                    Toast.makeText(getApplicationContext(), "LoginError", Toast.LENGTH_LONG).show();
+                    editTextUser.requestFocus();
+                    editTextUser.selectAll();
+                }else if(thread.getMensaje().getType()==TypeMessage.PASSWERROR){
+                    Toast.makeText(getApplicationContext(), "PasswordError", Toast.LENGTH_LONG).show();
+                    editTextPassword.requestFocus();
+                    editTextPassword.selectAll();
                 }
 
                 return correct;
