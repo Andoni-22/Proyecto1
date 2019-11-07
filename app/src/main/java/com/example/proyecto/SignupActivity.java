@@ -25,15 +25,15 @@ import validators.Validators;
 /**
  * @author Andoni Fiat
  */
-public class SignupActivity extends AppCompatActivity{
+public class SignupActivity extends AppCompatActivity {
     private Button btnCreateUser;
     private EditText editTextUsername;
     private EditText editTextEmail;
     private EditText editTextFullname;
     private EditText editTextPWD;
     private EditText editTextComfirmPWD;
-    private MyThread thread ;
-    private User user=new User();
+    private MyThread thread;
+    private User user = new User();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,76 +66,91 @@ public class SignupActivity extends AppCompatActivity{
 
                 correct = comprobarDatos();
 
-                if(correct == true){
+                if (correct == true) {
                     esta = comprobarSignUp();
                 }
-                if(esta == true){
+                if (esta == true) {
                     Intent intent = new Intent(getApplicationContext(), LogOutActivity.class);
-                    intent.putExtra("usuario",user);
+                    intent.putExtra("usuario", user);
                     startActivity(intent);
                 }
             }
+
             /**
              * In this method we chechk that the signup data have a correct format
              */
             private boolean comprobarDatos() {
 
-
-                String email,password,comfirmPwd;
+                String email, password, comfirmPwd;
                 boolean correct = false, functional = true;
                 Validators vali = new Validators();
 
                 email = editTextEmail.getText().toString();
                 password = editTextPWD.getText().toString();
                 comfirmPwd = editTextComfirmPWD.getText().toString();
-
-                if(editTextUsername.getText().toString().isEmpty()){
+                if (editTextUsername.getText().length() > 40) {
+                    editTextUsername.setError("Username can´t be more than 40 characters");
+                    functional = false;
+                } else if (editTextUsername.getText().toString().isEmpty()) {
                     editTextUsername.setError("Not data found");
                     functional = false;
                 }
-                if(editTextEmail.getText().toString().isEmpty()){
+
+                if (editTextEmail.getText().length() > 40) {
+                    editTextEmail.setError("Email can´t be more than 40 characters");
+                    functional = false;
+                } else if (editTextEmail.getText().toString().isEmpty()) {
                     editTextEmail.setError("Not data found");
                     functional = false;
-                }else if(!editTextEmail.getText().toString().isEmpty()){
-                    correct=vali.emailChecker(email);
-                    if(correct!=true){
+                } else if (!editTextEmail.getText().toString().isEmpty()) {
+                    correct = vali.emailChecker(email);
+                    if (correct != true) {
                         editTextEmail.setText("");
                         editTextEmail.setError("Invalid email format");
                         functional = false;
                     }
                 }
-                if(editTextFullname.getText().toString().isEmpty()){
+                if (editTextFullname.getText().length() > 40) {
+                    editTextFullname.setError("Full name can´t be more than 40 characters");
+                    functional = false;
+                } else if (editTextFullname.getText().toString().isEmpty()) {
                     editTextFullname.setError("Not data found");
                     functional = false;
                 }
-                if(editTextPWD.getText().toString().isEmpty()){
+                if (editTextPWD.getText().length() > 40) {
+                    editTextPWD.setError("Password can´t be more than 40 characters");
+                    functional = false;
+                } else if (editTextPWD.getText().toString().isEmpty()) {
                     editTextPWD.setError("Not data found");
                     functional = false;
-                }else if(!editTextPWD.getText().toString().isEmpty()){
+                } else if (!editTextPWD.getText().toString().isEmpty()) {
                     correct = vali.passwordChecker(password);
-                    if(correct!=true){
-                        editTextPWD.setError("Min 8 characters, 1 Upper, 1 lower and 1 number");
+                    if (correct != true) {
+                        editTextPWD.setError("Min 8 characters, 1 Upper, 1 lower, 1 especial and 1 number");
                         editTextPWD.setText("");
                         editTextComfirmPWD.setText("");
                         functional = false;
-                    }if(!password.equalsIgnoreCase(comfirmPwd)){
+                    }
+                    if (!password.equalsIgnoreCase(comfirmPwd)) {
                         editTextComfirmPWD.setError("Password does not match");
                         editTextComfirmPWD.setText("");
                         editTextPWD.setText("");
                         functional = false;
                     }
                 }
-                if(editTextComfirmPWD.getText().toString().isEmpty()){
+                if (editTextComfirmPWD.getText().toString().isEmpty()) {
                     editTextComfirmPWD.setError("Not data found");
                     functional = false;
                 }
                 return functional;
             }
+
         });
-        }
+    }
 
     /**
      * Method that we use to do sign u
+     *
      * @return true if everything is okey and the user is able to connect
      */
     private boolean comprobarSignUp() {
@@ -151,7 +166,7 @@ public class SignupActivity extends AppCompatActivity{
         mensajeSalida.setData(user);
         mensajeSalida.setType(TypeMessage.SIGNUP);
 
-        thread=new MyThread(mensajeSalida);
+        thread = new MyThread(mensajeSalida);
 
         try {
             thread.start();
@@ -160,20 +175,18 @@ public class SignupActivity extends AppCompatActivity{
             e.printStackTrace();
         }
 
-        if(thread.getMensaje().getType()==TypeMessage.OK){
-            user=(User)thread.getMensaje().getData();
+        if (thread.getMensaje().getType() == TypeMessage.OK) {
+            user = (User) thread.getMensaje().getData();
             correct = true;
-        }else if(thread.getMensaje().getType()==TypeMessage.SUPEMAILERROR){
+        } else if (thread.getMensaje().getType() == TypeMessage.SUPEMAILERROR) {
             Toast.makeText(getApplicationContext(), "EmailError", Toast.LENGTH_LONG).show();
             editTextEmail.requestFocus();
             editTextEmail.selectAll();
-        }else if(thread.getMensaje().getType()==TypeMessage.SUPLOGERROR){
+        } else if (thread.getMensaje().getType() == TypeMessage.SUPLOGERROR) {
             Toast.makeText(getApplicationContext(), "LOGIN already used", Toast.LENGTH_LONG).show();
             editTextUsername.requestFocus();
             editTextUsername.selectAll();
         }
-
-
 
 
         return correct;

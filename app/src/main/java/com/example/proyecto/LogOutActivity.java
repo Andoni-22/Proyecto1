@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import Models.User;
 
+/**
+ *
+ */
 public class LogOutActivity extends AppCompatActivity {
 
     private Button btnLogOut;

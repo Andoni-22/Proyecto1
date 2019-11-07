@@ -19,7 +19,13 @@ import Models.Message;
 import Models.User;
 
 /**
- * @autor Andoni Fiat
+ * Activity that launches application
+ *
+ * This activity is used to display different layouts
+ *
+ * @autor Andoni Fiat y Francisco Romero
+ * @version 2019.0711
+ * @since 1.0
  */
 public class MainActivity extends AppCompatActivity {
     private Button btnLogin;
@@ -29,8 +35,11 @@ public class MainActivity extends AppCompatActivity {
     private MyThread thread ;
     private User user;
 
-
-
+    /**
+     * Load components in the activity
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,13 +53,22 @@ public class MainActivity extends AppCompatActivity {
         signUpLauncher();
 
         network = isInternet();
+
         if(network == false){
             Toast.makeText(getApplicationContext(),"NOT INTERNETEN CONECTION",Toast.LENGTH_SHORT).show();
             btnLogin.setEnabled(false);
             btnSignUp.setEnabled(false);
         }
+
         logInLauncher();
+
     }
+
+    /**
+     * Method that checks the net connection
+     *
+     * @return true or false if the acces to the net is available or not
+     */
     private boolean isInternet() {
         boolean ret = false;
         ConnectivityManager connectivityManager;
@@ -75,22 +93,44 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean esta, network;
+                boolean esta, network,correct;
 
-                esta = comprobarLogin();
+                correct = comprobarFormato();
 
-                if(esta==true){
-                    Intent intent = new Intent(getApplicationContext(), LogOutActivity.class);
-                    intent.putExtra("usuario", user);
-                    Toast.makeText(getApplicationContext(),"LOGIN CORRECTLY",Toast.LENGTH_LONG).show();
-                    startActivity(intent);
-                    finish();
-                }else{
-                    Toast.makeText(getApplicationContext(), "Incorrect login", Toast.LENGTH_LONG);
-
-
+                if(correct == true){
+                    esta = comprobarLogin();
+                    if(esta==true){
+                        Intent intent = new Intent(getApplicationContext(), LogOutActivity.class);
+                        intent.putExtra("usuario", user);
+                        Toast.makeText(getApplicationContext(),"LOGIN CORRECTLY",Toast.LENGTH_LONG).show();
+                        startActivity(intent);
+                        finish();
+                    }else{
+                        Toast.makeText(getApplicationContext(), "Incorrect login", Toast.LENGTH_LONG);
+                    }
                 }
             }
+
+            /**
+             * Method that checks user and password text formats
+             *
+             * @return true if user&&password have the FORMAT, else false
+             */
+            private boolean comprobarFormato() {
+                boolean correct = true;
+                if(editTextUser.getText().toString().isEmpty()){
+                    editTextUser.setError("Not data found");
+                    correct = false;
+                }
+                if(editTextPassword.getText().toString().isEmpty()){
+                    editTextPassword.setError("Not data found");
+                    correct = false;
+                }
+
+                return correct;
+            }
+
+
             /**
              * method that comfirm the login
              * @return true if the user and password are correct
