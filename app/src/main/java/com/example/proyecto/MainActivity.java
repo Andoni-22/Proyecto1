@@ -26,7 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private Button btnSignUp;
     private EditText editTextPassword;
     private EditText editTextUser;
-    private MyThread thread;
+    private MyThread thread ;
+    private User user=new User();
 
 
 
@@ -34,21 +35,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        boolean network = false;
         editTextUser = (EditText) findViewById(R.id.editTextUser);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
-        boolean network;
 
-        logInLauncher();
         signUpLauncher();
-        network = isInternet();
-    }
 
+        network = isInternet();
+        if(network == false){
+            Toast.makeText(getApplicationContext(),"NOT INTERNETEN CONECTION",Toast.LENGTH_SHORT).show();
+            btnLogin.setEnabled(false);
+            btnSignUp.setEnabled(false);
+        }
+        logInLauncher();
+    }
     private boolean isInternet() {
         boolean ret = false;
-        ConnectivityManager connectivityManager=null;
+        ConnectivityManager connectivityManager;
         try{
             connectivityManager = (ConnectivityManager) getApplicationContext()
                     .getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -62,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         return ret;
     }
 
-
     /**
      * Method that launch activity_logOut layout
      */
@@ -71,47 +75,48 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean esta;
+                boolean esta, network;
+
                 esta = comprobarLogin();
 
                 if(esta==true){
                     Intent intent = new Intent(getApplicationContext(), LogOutActivity.class);
-                    intent.putExtra("usuario",thread.getResult());
+                    intent.putExtra("usuario", user);
                     startActivity(intent);
                 }else{
-                    editTextPassword.setError("Incorrect login");
+                    Toast.makeText(getApplicationContext(), "Incorrect login", Toast.LENGTH_LONG);
+
+
                 }
             }
-
             /**
              * method that comfirm the login
              * @return true if the user and password are correct
              */
             private boolean comprobarLogin() {
                 boolean correct = false;
-                int opc;
-                User user = new User();
-                Message msg = new Message();
+
                 user.setLogin(editTextUser.getText().toString());
                 user.setPassword(editTextPassword.getText().toString());
 
-                msg.setData(user);
-                msg.setType(TypeMessage.LOGIN);
+                Message mensaje = new Message();
+                mensaje.setData(user);
+                mensaje.setType(TypeMessage.LOGIN);
 
-                thread=new MyThread(1,user);
+                thread=new MyThread(mensaje);
 
                 try {
                     thread.start();
                     thread.join();
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }finally {
-                    user = thread.getResult();
-                    if (user != null) {
-                        correct = true;
-                    }
-                    return correct;
+                    Toast.makeText(getApplicationContext(), "Conexión interrumpida", Toast.LENGTH_LONG);
                 }
+                if(thread.getMensaje().getType()==TypeMessage.OK){
+                    user = (User) thread.getMensaje().getData();
+                    correct = true;
+                }
+
+                return correct;
             }
 
         });

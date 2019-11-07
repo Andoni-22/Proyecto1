@@ -31,8 +31,9 @@ public class SignupActivity extends AppCompatActivity{
     private EditText editTextFullname;
     private EditText editTextPWD;
     private EditText editTextComfirmPWD;
+    private MyThread thread ;
+    private User user=new User();
 
-   Signable client = ClientFactory.getClient();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +45,12 @@ public class SignupActivity extends AppCompatActivity{
         editTextPWD = (EditText) findViewById(R.id.editTextPWD);
         editTextComfirmPWD = (EditText) findViewById(R.id.editTextComfirmPWD);
         btnCreateUser = (Button) findViewById(R.id.btnCreateUser);
+
+        editTextUsername.setText("yeray");
+        editTextEmail.setText("yeray@gmail.com");
+        editTextFullname.setText("yeray yeray");
+        editTextPWD.setText("Abcd*1234");
+        editTextComfirmPWD.setText("Abcd*1234");
 
         createUser();
     }
@@ -63,6 +70,7 @@ public class SignupActivity extends AppCompatActivity{
                 }
                 if(esta == true){
                     Intent intent = new Intent(getApplicationContext(), LogOutActivity.class);
+                    intent.putExtra("usuario",user);
                     startActivity(intent);
                 }
             }
@@ -90,7 +98,7 @@ public class SignupActivity extends AppCompatActivity{
                 }else if(!editTextEmail.getText().toString().isEmpty()){
                     correct=vali.emailChecker(email);
                     if(correct!=true){
-
+                        editTextEmail.setText("");
                         editTextEmail.setError("Invalid email format");
                         functional = false;
                     }
@@ -102,25 +110,24 @@ public class SignupActivity extends AppCompatActivity{
                 if(editTextPWD.getText().toString().isEmpty()){
                     editTextPWD.setError("Not data found");
                     functional = false;
+                }else if(!editTextPWD.getText().toString().isEmpty()){
+                    correct = vali.passwordChecker(password);
+                    if(correct!=true){
+                        editTextPWD.setError("Min 8 characters, 1 Upper, 1 lower and 1 number");
+                        editTextPWD.setText("");
+                        editTextComfirmPWD.setText("");
+                        functional = false;
+                    }if(!password.equalsIgnoreCase(comfirmPwd)){
+                        editTextComfirmPWD.setError("Password does not match");
+                        editTextComfirmPWD.setText("");
+                        editTextPWD.setText("");
+                        functional = false;
+                    }
                 }
                 if(editTextComfirmPWD.getText().toString().isEmpty()){
                     editTextComfirmPWD.setError("Not data found");
                     functional = false;
                 }
-                correct = vali.passwordChecker(password);
-                if(correct==false){
-                    editTextPWD.setError("Min 8 characters, 1 Upper, 1 lower and 1 number");
-
-
-                    functional = false;
-                }if(!password.equalsIgnoreCase(comfirmPwd)){
-                    editTextComfirmPWD.setError("Password does not match");
-
-                    editTextPWD.setText("");
-                    functional = false;
-                }
-
-
                 return functional;
             }
         });
@@ -131,17 +138,19 @@ public class SignupActivity extends AppCompatActivity{
      * @return true if everything is okey and the user is able to connect
      */
     private boolean comprobarSignUp() {
-        User user = new User();
-        MyThread thread;
-        int opc;
+
         boolean correct = false;
 
-        user.setFullname(String.valueOf(editTextFullname.getText()));
-        user.setEmail(String.valueOf(editTextEmail.getText()));
-        user.setLogin(String.valueOf(editTextUsername.getText()));
-        user.setPassword(String.valueOf(editTextPWD.getText()));
+        user.setFullname(editTextFullname.getText().toString());
+        user.setEmail(editTextEmail.getText().toString());
+        user.setLogin(editTextUsername.getText().toString());
+        user.setPassword(editTextPWD.getText().toString());
 
-        thread=new MyThread(opc = 2, user);
+        Message mensajeSalida = new Message();
+        mensajeSalida.setData(user);
+        mensajeSalida.setType(TypeMessage.SIGNUP);
+
+        thread=new MyThread(mensajeSalida);
 
         try {
             thread.start();
@@ -149,10 +158,14 @@ public class SignupActivity extends AppCompatActivity{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        user = thread.getResult();
-        if(user!=null){
+
+        if(thread.getMensaje().getType()==TypeMessage.OK){
+            user=(User)thread.getMensaje().getData();
             correct = true;
         }
+
+
+
 
         return correct;
     }

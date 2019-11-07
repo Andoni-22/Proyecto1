@@ -1,5 +1,7 @@
 package com.example.proyecto;
 
+import android.util.Log;
+
 import Interfaces.Signable;
 import Logic.ClientFactory;
 import Models.Enum.TypeMessage;
@@ -15,56 +17,62 @@ import exceptions.SupLogErrorException;
  * @author Andoni Fiat
  */
 public class MyThread extends Thread {
-    private int opc;
-    private User user;
+
+    private Message message = new Message();
+    private Message mensaje;
     private User rest;
-    Signable sign = ClientFactory.getClient();
-    Message message = new Message();
 
     /**
      * method that we use to get the data on the trhead
-     * @param opc integer that can be "1" or "2"
-     * @param user object that have the login or signup data
+     * @param mensaje object that have the login or signup data
      */
-    public MyThread(int opc, User user){
-        this.opc = opc;
-        this.user = user;
+    public  MyThread(Message mensaje){
+        this.mensaje=mensaje;
     }
 
     /**
      * method that we use to conect whith the server
      */
     public void run(){
+        Signable sign = ClientFactory.getClient();
 
         try {
-            switch (opc){
+            switch (mensaje.getType()){
                 //LOGIN
-                case 1:
-                    rest = sign.login(user);
+                case LOGIN:
+                    rest = sign.login((User)mensaje.getData());
                     break;
                 //Sign up
-                case 2:
-                    rest = sign.signUp(user);
+                case SIGNUP:
+                    rest = sign.signUp((User)mensaje.getData());
                     break;
             }
         } catch (LoginErrorException e) {
-            e.printStackTrace();
+            Log.e("Error","Error en el login");
+            mensaje.setType(TypeMessage.LOGINERROR);
         } catch (PasswErrorException e) {
-            e.printStackTrace();
+            Log.e("Error","Error en el passwd");
+            mensaje.setType(TypeMessage.PASSWERROR);
         } catch (SupEmailErrorException e) {
-            e.printStackTrace();
+            Log.e("Error","Error en el email");
+            mensaje.setType(TypeMessage.SUPEMAILERROR);
         } catch (SupLogErrorException e) {
-            e.printStackTrace();
+            Log.e("Error","Error en el login");
+            mensaje.setType(TypeMessage.SUPLOGERROR);
         } catch (ServerErrorException e) {
-            e.printStackTrace();
+            Log.e("Error","Error en el servidor");
+            mensaje.setType(TypeMessage.LOGINERROR);
         }
+        mensaje.setType(TypeMessage.OK);
+        mensaje.setData(rest);
+
     }
 
-    /**
-     * Method that return the object
-     * @return user, if user is null is because something go wrong
-     */
-    public User getResult(){
-        return rest;
+    public Message getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(Message mensaje) {
+        this.mensaje = mensaje;
     }
 }
