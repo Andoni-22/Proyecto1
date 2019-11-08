@@ -14,7 +14,9 @@ import exceptions.SupEmailErrorException;
 import exceptions.SupLogErrorException;
 
 /**
- * @author Andoni Fiat
+ * Class that defines a new thread
+ *
+ * @author Andoni Fiat,Rubén Zarantón, Francisco Romero and Yeray Ramos
  */
 public class MyThread extends Thread {
 
@@ -23,7 +25,7 @@ public class MyThread extends Thread {
     private User rest;
 
     /**
-     * method that we use to get the data on the trhead
+     * Constructor
      * @param mensaje object that have the login or signup data
      */
     public  MyThread(Message mensaje){
@@ -31,7 +33,7 @@ public class MyThread extends Thread {
     }
 
     /**
-     * method that we use to conect whith the server
+     * method that starts the new thread
      */
     public void run(){
         Signable sign = ClientFactory.getClient();

@@ -23,7 +23,11 @@ import Models.User;
 import validators.Validators;
 
 /**
- * @author Andoni Fiat
+ * Activity Sign Up launcher
+ *
+ * This activity is launched if SignUp button is clicked
+ *
+ * @author Ruben Zarantón and Yeray Ramos
  */
 public class SignupActivity extends AppCompatActivity {
     private Button btnCreateUser;
@@ -35,6 +39,11 @@ public class SignupActivity extends AppCompatActivity {
     private MyThread thread;
     private User user = new User();
 
+    /**
+     * Load components in this activity
+     *
+     * @param savedInstanceState stored application data
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,15 +56,12 @@ public class SignupActivity extends AppCompatActivity {
         editTextComfirmPWD = (EditText) findViewById(R.id.editTextComfirmPWD);
         btnCreateUser = (Button) findViewById(R.id.btnCreateUser);
 
-        editTextUsername.setText("yeray");
-        editTextEmail.setText("yeray@gmail.com");
-        editTextFullname.setText("yeray yeray");
-        editTextPWD.setText("Abcd*1234");
-        editTextComfirmPWD.setText("Abcd*1234");
-
         createUser();
     }
 
+    /**
+     * Method that creates user and passes user info to LogOut
+     */
     private void createUser() {
 
 
@@ -77,7 +83,7 @@ public class SignupActivity extends AppCompatActivity {
             }
 
             /**
-             * In this method we chechk that the signup data have a correct format
+             * In this method we check that the signup data have a correct format
              */
             private boolean comprobarDatos() {
 
@@ -85,9 +91,9 @@ public class SignupActivity extends AppCompatActivity {
                 boolean correct = false, functional = true;
                 Validators vali = new Validators();
 
-                email = editTextEmail.getText().toString();
-                password = editTextPWD.getText().toString();
-                comfirmPwd = editTextComfirmPWD.getText().toString();
+                email = editTextEmail.getText().toString().trim();
+                password = editTextPWD.getText().toString().trim();
+                comfirmPwd = editTextComfirmPWD.getText().toString().trim();
                 if (editTextUsername.getText().length() > 40) {
                     editTextUsername.setError("Username can´t be more than 40 characters");
                     functional = false;
@@ -149,17 +155,17 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     /**
-     * Method that we use to do sign u
+     * Method that sets user, message and constructs new thread with it
      *
-     * @return true if everything is okey and the user is able to connect
+     * @return true if everything is ok&&user is able to connect
      */
     private boolean comprobarSignUp() {
 
         boolean correct = false;
 
         user.setFullname(editTextFullname.getText().toString());
-        user.setEmail(editTextEmail.getText().toString());
-        user.setLogin(editTextUsername.getText().toString());
+        user.setEmail(editTextEmail.getText().toString().trim());
+        user.setLogin(editTextUsername.getText().toString().trim());
         user.setPassword(editTextPWD.getText().toString());
 
         Message mensajeSalida = new Message();

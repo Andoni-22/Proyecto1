@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
+        editTextUser.requestFocus();
 
         signUpLauncher();
 
@@ -132,7 +133,8 @@ public class MainActivity extends AppCompatActivity {
 
 
             /**
-             * method that comfirm the login
+             * method that sends the message to thread to start it
+             *
              * @return true if the user and password are correct
              */
             private boolean comprobarLogin() {

@@ -11,13 +11,23 @@ import android.widget.TextView;
 import Models.User;
 
 /**
+ * Activity Sign Up launcher
  *
+ * This activity is launched if SignUp button is clicked
+ *
+ * @author Rubén Zarantón and Andoni Fiat
  */
 public class LogOutActivity extends AppCompatActivity {
 
     private Button btnLogOut;
     private TextView textViewUser;
     private User user;
+
+    /**
+     * Load components in this activity
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +45,9 @@ public class LogOutActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Method that removes user data and launches the MainActivity
+     */
     private void LogOut() {
 
         btnLogOut.setOnClickListener(new View.OnClickListener() {
