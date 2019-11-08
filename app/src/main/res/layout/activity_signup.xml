@@ -27,7 +27,7 @@
             android:id="@+id/editTextEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="44dp"
             android:ems="10"
             android:hint="@string/email"
             android:inputType="textPersonName"
@@ -46,7 +46,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
-            app:layout_constraintVertical_bias="0.05" />
+            app:layout_constraintVertical_bias="0.07" />
 
         <EditText
             android:id="@+id/editTextPWD"
@@ -58,7 +58,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextFullname"
-            app:layout_constraintVertical_bias="0.186" />
+            app:layout_constraintVertical_bias="0.213" />
 
         <EditText
             android:id="@+id/editTextComfirmPWD"
@@ -70,7 +70,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextPWD"
-            app:layout_constraintVertical_bias="0.197" />
+            app:layout_constraintVertical_bias="0.219" />
 
         <TextView
             android:id="@+id/textViewPWD"
@@ -79,8 +79,9 @@
             android:text="@string/password2"
             app:layout_constraintBottom_toTopOf="@+id/editTextPWD"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.284"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextFullname"
+            app:layout_constraintVertical_bias="0.727" />
 
         <TextView
             android:id="@+id/textViewComfirmPWD"
@@ -89,8 +90,9 @@
             android:text="@string/confirmPassword"
             app:layout_constraintBottom_toTopOf="@+id/editTextComfirmPWD"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.342"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextPWD" />
 
         <Button
             android:id="@+id/btnCreateUser"
@@ -103,32 +105,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.957" />
-
-        <Button
-            android:id="@+id/btnUndo"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/undo"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.105"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.803" />
-
-        <Button
-            android:id="@+id/btnRedo"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/redo"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.894"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.803" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

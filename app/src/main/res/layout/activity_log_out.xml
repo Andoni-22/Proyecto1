@@ -33,7 +33,7 @@
         app:layout_constraintVertical_bias="0.192" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textViewUser"
         android:layout_width="125dp"
         android:layout_height="40dp"
         android:text="@string/userWelcome"
